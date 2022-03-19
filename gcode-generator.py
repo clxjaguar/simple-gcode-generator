@@ -6,6 +6,8 @@ import gettext
 _ = gettext.gettext
 
 VERSION = "1.15b"
+VERSION = "1.16b"
+
 try:
 	parentProcess = os.popen("ps -o cmd= %d" % os.getppid()).read().strip()
 except:
@@ -336,16 +338,27 @@ class About(QWidget):
 		QWidget.__init__(self)
 		hl = QHBoxLayout(self)
 
+		def lnk(url):
+			return '<a href="%s">%s</a><br>\n' % (url, url)
+
 		l = QVBoxLayout()
 		hl.addLayout(l)
-		l.addWidget(QLabel(_("Programmé par")+" cLx\nhttp://clx.freeshell.org/"))
-		ppLabel = QLabel(_("Process parent")+":\n"+parentProcess)
+		aboutLabel = QLabel()
+		aboutLabel.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextBrowserInteraction)
+		aboutLabel.setOpenExternalLinks(True)
+		aboutLabel.setTextFormat(Qt.RichText)
+		aboutLabel.setText(lnk("https://github.com/clxjaguar/simple-gcode-generator")
+		                   + lnk("https://gitlab.com/cLxJaguar/simple-gcode-generator")
+		                   + "<br>"+_("Programmé par")
+		                   + " cLx<br>"+lnk("http://clx.freeshell.org/"))
+		l.addWidget(aboutLabel)
+		ppLabel = QLabel(_("Process parent :")+"\n"+parentProcess)
 		ppLabel.setWordWrap(True)
 		l.addWidget(ppLabel)
 		l.addStretch()
 		hl.addStretch()
 
-		iconLabel = QLabel(" ")
+		iconLabel = QLabel()
 		iconLabel.setPixmap(getEmbeddedPixmap())
 		hl.addWidget(iconLabel)
 		hl.setAlignment(iconLabel, Qt.AlignTop)
