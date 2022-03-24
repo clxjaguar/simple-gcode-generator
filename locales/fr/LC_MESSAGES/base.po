@@ -1,0 +1,211 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.17\n"
+"POT-Creation-Date: 2022-03-23 22:30+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: ../gcode-generator.py:83
+msgid "Helicoidal"
+msgstr "Helicoïdal"
+
+#: ../gcode-generator.py:89
+msgid "X/Y center position"
+msgstr "Position X/Y du centre de la découpe"
+
+#: ../gcode-generator.py:94
+msgid "Circular movement radius"
+msgstr "Rayon du déplacement circulaire"
+
+#: ../gcode-generator.py:98
+msgid "Milling direction"
+msgstr "Sens de découpe"
+
+#: ../gcode-generator.py:99
+msgid "G02 (CW)"
+msgstr "G02 ↷"
+
+#: ../gcode-generator.py:99
+msgid "G03 (CCW)"
+msgstr "G03 ↶"
+
+#: ../gcode-generator.py:102
+msgid "Do a flat turn at the bottom"
+msgstr "Finition plate"
+
+#: ../gcode-generator.py:103 ../gcode-generator.py:107
+#: ../gcode-generator.py:244
+msgid "No"
+msgstr "Non"
+
+#: ../gcode-generator.py:103 ../gcode-generator.py:107
+#: ../gcode-generator.py:244
+msgid "Yes"
+msgstr "Oui"
+
+#: ../gcode-generator.py:106
+msgid "Rotative pull-out"
+msgstr "Remonter en tournant"
+
+#: ../gcode-generator.py:149
+msgid "Zig-zag"
+msgstr "Alterné"
+
+#: ../gcode-generator.py:155
+msgid "Start corner X/Y position"
+msgstr "Position X/Y du coin en début d'usinage"
+
+#: ../gcode-generator.py:160
+msgid "Opposite corner X/Y position"
+msgstr "Position X/Y du coin opposé"
+
+#: ../gcode-generator.py:165
+msgid "Mill along axis"
+msgstr "Fraiser principalement suivant axe"
+
+#: ../gcode-generator.py:166
+msgid "X"
+msgstr "X"
+
+#: ../gcode-generator.py:166
+msgid "Y"
+msgstr "Y"
+
+#: ../gcode-generator.py:169
+msgid "Passes horizontal wideness"
+msgstr "Largeur horizontale des passes"
+
+#: ../gcode-generator.py:230
+msgid "Path"
+msgstr "Trajet"
+
+#: ../gcode-generator.py:235
+msgid "X Y coordinates"
+msgstr "Coordonnées en X Y"
+
+#: ../gcode-generator.py:235 ../gcode-generator.py:304
+msgid "(separated by semicolons or newlines)"
+msgstr "(séparés par des points virgules ou des retours chariot)"
+
+#: ../gcode-generator.py:243
+msgid "Close tool path"
+msgstr "Fermer parcours d'outil"
+
+#: ../gcode-generator.py:244
+msgid "Back and forth"
+msgstr "Vas-et-viens"
+
+#: ../gcode-generator.py:264 ../gcode-generator.py:332
+msgid "Incorrect amount of coordinates: "
+msgstr "Trop ou pas assez de coordonnées : "
+
+#: ../gcode-generator.py:297
+msgid "Missing condition"
+msgstr "Erreur programme : condition manquante"
+
+#: ../gcode-generator.py:300
+msgid "Drilling"
+msgstr "Perçages"
+
+#: ../gcode-generator.py:304
+msgid "X Y or X Y Z coordinates"
+msgstr "Coordonnées des perçages en X Y ou X Y Z"
+
+#: ../gcode-generator.py:311
+msgid "Setback height from surface"
+msgstr "Hauteur de retrait par rapport à la surface"
+
+#: ../gcode-generator.py:346
+msgid "About"
+msgstr "À propos"
+
+#: ../gcode-generator.py:363
+msgid "Programmed by"
+msgstr "Programmé par"
+
+#: ../gcode-generator.py:366
+msgid "Parent process: %s"
+msgstr "Process parent : %s"
+
+#: ../gcode-generator.py:414
+msgid "Z workpiece surface"
+msgstr "Z de surface de pièce"
+
+#: ../gcode-generator.py:422
+msgid "Z at job end"
+msgstr "Z en fin de fraisage"
+
+#: ../gcode-generator.py:430
+msgid "Z decrement (height of passes)"
+msgstr "Décrément en Z (épaisseur des passes)"
+
+#: ../gcode-generator.py:433
+msgid "Plunging rate"
+msgstr "Vitesse de descente"
+
+#: ../gcode-generator.py:436
+msgid "Feed rate"
+msgstr "Vitesse d'avance"
+
+#: ../gcode-generator.py:439
+msgid "Trajectory mode"
+msgstr "Mode de trajectoire"
+
+#: ../gcode-generator.py:440
+msgid "Exact"
+msgstr "Exacte"
+
+#: ../gcode-generator.py:440
+msgid "Speed"
+msgstr "Vitesse"
+
+#: ../gcode-generator.py:440
+msgid "Stops"
+msgstr "Arrêts"
+
+#: ../gcode-generator.py:444
+msgid "(to file)"
+msgstr "(vers fichier)"
+
+#: ../gcode-generator.py:444 ../gcode-generator.py:447
+#: ../gcode-generator.py:455
+msgid "Generate G-Code"
+msgstr "Générer G-Code"
+
+#: ../gcode-generator.py:447
+msgid "(update file)"
+msgstr "(mise à jour fichier)"
+
+#: ../gcode-generator.py:455
+msgid "(to standard output)"
+msgstr "(vers sortie standard)"
+
+#: ../gcode-generator.py:465 ../gcode-generator.py:468
+msgid "G-Code Generator"
+msgstr "Générateur de G-Code"
+
+#: ../gcode-generator.py:484
+msgid "Export G-Code as..."
+msgstr "Export G-Code sous..."
+
+#: ../gcode-generator.py:488
+msgid "All files"
+msgstr "Tous les fichiers"
+
+#: ../gcode-generator.py:488
+msgid "G-Code files"
+msgstr "Fichiers G-Code"
+
+#: ../gcode-generator.py:514
+msgid "Exception at line %d"
+msgstr "Exception en ligne %d"
+
+#: ../gcode-generator.py:514
+msgid "G-Code generation error"
+msgstr "Erreur génération G-Code"

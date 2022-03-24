@@ -2,11 +2,22 @@
 # -*- coding: utf-8 -*-
 
 import sys, os
-import gettext
-_ = gettext.gettext
 
-VERSION = "1.15b"
-VERSION = "1.16b"
+try:
+	import gettext
+	try:
+		gettext.translation('base', localedir='locales').install()
+
+	except Exception as e:
+		print(str(e))
+		gettext.translation('base', localedir='locales', languages=['en']).install()
+
+except Exception as e:
+	print(str(e))
+	_ = lambda s:s
+
+
+VERSION = "1.17"
 
 try:
 	parentProcess = os.popen("ps -o cmd= %d" % os.getppid()).read().strip()
@@ -69,31 +80,31 @@ def nextpass(v, v_start, v_end, v_step):
 	return v, finished
 
 class OperationHelicoidal(QWidget):
-	tabTitle = _("Helicoïdal")
+	tabTitle = _("Helicoidal")
 	def __init__(self):
 		QWidget.__init__(self)
 		l = QGridLayout(self)
 
 		# center position
-		l.addWidget(QLabel(_("Position X/Y du centre de la découpe")))
+		l.addWidget(QLabel(_("X/Y center position")))
 		self.centerXpos = MyQDoubleSpinBox(layout=l, layoutArgs=(0, 1))
 		self.centerYpos = MyQDoubleSpinBox(layout=l, layoutArgs=(0, 2))
 
 		# radius
-		l.addWidget(QLabel(_("Rayon du déplacement circulaire")), 1, 0)
+		l.addWidget(QLabel(_("Circular movement radius")), 1, 0)
 		self.radius = MyQDoubleSpinBox(25.0, minimum=0, layout=l, layoutArgs=(1, 1, 1, 2))
 
 		# milling direction
-		l.addWidget(QLabel(_("Sens de découpe")), 2, 0)
-		self.millingDirectionBG = MyQButtonGroup(("G02 ↷", "G03 ↶"), ("G02", "G03"), 1, layout=l, layoutArgs=(2, 1, 1, 2))
+		l.addWidget(QLabel(_("Milling direction")), 2, 0)
+		self.millingDirectionBG = MyQButtonGroup((_("G02 (CW)"), _("G03 (CCW)")), ("G02", "G03"), 1, layout=l, layoutArgs=(2, 1, 1, 2))
 
 		# finishing plane
-		l.addWidget(QLabel(_("Finition plate")), 3, 0)
-		self.finishing_planeBG = MyQButtonGroup((_("Oui"), _("Non")), (True, False), 0, layout=l, layoutArgs=(3, 1, 1, 2))
+		l.addWidget(QLabel(_("Do a flat turn at the bottom")), 3, 0)
+		self.finishing_planeBG = MyQButtonGroup((_("Yes"), _("No")), (True, False), 0, layout=l, layoutArgs=(3, 1, 1, 2))
 
 		# rotative pullout
-		l.addWidget(QLabel(_("Remonter en tournant")), 4, 0)
-		self.rotative_pulloutBG = MyQButtonGroup((_("Oui"), _("Non")), (True, False), 1, layout=l, layoutArgs=(4, 1, 1, 2))
+		l.addWidget(QLabel(_("Rotative pull-out")), 4, 0)
+		self.rotative_pulloutBG = MyQButtonGroup((_("Yes"), _("No")), (True, False), 1, layout=l, layoutArgs=(4, 1, 1, 2))
 
 		l.setRowStretch(100, 10)
 
@@ -135,27 +146,27 @@ class OperationHelicoidal(QWidget):
 		fd.write("G00 Z%g (move 3mm from the surface)\n" % (start_z+3))
 
 class OperationAlternateMilling(QWidget):
-	tabTitle = _("Alterné")
+	tabTitle = _("Zig-zag")
 	def __init__(self):
 		QWidget.__init__(self)
 		l = QGridLayout(self)
 
 		# start position
-		l.addWidget(QLabel(_("Position X/Y du coin en début d'usinage")))
+		l.addWidget(QLabel(_("Start corner X/Y position")))
 		self.startXpos = MyQDoubleSpinBox(layout=l, layoutArgs=(0, 1))
 		self.startYpos = MyQDoubleSpinBox(layout=l, layoutArgs=(0, 2))
 
 		# end position
-		l.addWidget(QLabel(_("Position X/Y du coin opposé")))
+		l.addWidget(QLabel(_("Opposite corner X/Y position")))
 		self.endXpos = MyQDoubleSpinBox(layout=l, layoutArgs=(1, 1))
 		self.endYpos = MyQDoubleSpinBox(layout=l, layoutArgs=(1, 2))
 
 		# milling axis
-		l.addWidget(QLabel(_("Fraiser principalement suivant axe")), 2, 0)
+		l.addWidget(QLabel(_("Mill along axis")), 2, 0)
 		self.millingAlongAxisBG = MyQButtonGroup((_("X"), _("Y")), ('x', 'y'), 0, layout=l, layoutArgs=(2, 1, 1, 2))
 
 		# milling band wideness
-		l.addWidget(QLabel(_("Largeur horizontale des passes")))
+		l.addWidget(QLabel(_("Passes horizontal wideness")))
 		self.horizontalPassWidth = MyQDoubleSpinBox(5, layout=l, layoutArgs=(3, 1, 1, 2))
 
 		l.setRowStretch(100, 10)
@@ -216,12 +227,12 @@ class OperationAlternateMilling(QWidget):
 			fd.write('G00 Z%g (1mm distance from surface on Z axis)\n' % (z + 1))
 
 class OperationPath(QWidget):
-	tabTitle = _("Trajet")
+	tabTitle = _("Path")
 	YES = 1; NO = 0; BACK_AND_FORTH = 2
 	def __init__(self):
 		QWidget.__init__(self)
 		l = QGridLayout(self)
-		l.addWidget(QLabel(_("Coordonnées en X Y\n(séparés par des points virgules ou des retours chariot)")), 0, 0, 1, 2)
+		l.addWidget(QLabel(_("X Y coordinates")+"\n"+_("(separated by semicolons or newlines)")), 0, 0, 1, 2)
 		self.editor = QTextEdit()
 		self.editor.setPlainText("0.0 0.0\n0.0 10.0\n10.0 10.0\n10.0 0")
 		self.editor.sizeHint = lambda: QSize(-1, -1)
@@ -229,8 +240,8 @@ class OperationPath(QWidget):
 		l.addWidget(self.editor, 1, 0, 1, 2)
 
 		# mill to start position to close path or not
-		l.addWidget(QLabel(_("Fermer parcours d'outil")), 2, 0)
-		self.closePathBG = MyQButtonGroup((_("Oui"), _("Non"), _("Vas-et-viens")), (self.YES, self.NO, self.BACK_AND_FORTH), 0, layout=l, layoutArgs=(2, 1, 1, 1))
+		l.addWidget(QLabel(_("Close tool path")), 2, 0)
+		self.closePathBG = MyQButtonGroup((_("Yes"), _("No"), _("Back and forth")), (self.YES, self.NO, self.BACK_AND_FORTH), 0, layout=l, layoutArgs=(2, 1, 1, 1))
 
 	def generate(self, fd, **kwargs):
 		def kwget(kw, defaultValue=0):
@@ -250,7 +261,7 @@ class OperationPath(QWidget):
 				continue
 			coords = coordinatesStr.split()
 			if len(coords) != 2:
-				raise Exception(_("Trop ou pas assez de coordonnées: ")+coordinatesStr)
+				raise Exception(_("Incorrect amount of coordinates: ")+coordinatesStr)
 			x = float(coords[0]) + kwget('offset_x')
 			y = float(coords[1]) + kwget('offset_y')
 			coordinatesList.append((x, y))
@@ -286,18 +297,18 @@ class OperationPath(QWidget):
 				raise Exception(_("Missing condition"))
 
 class OperationDrilling(QWidget):
-	tabTitle = _("Perçages")
+	tabTitle = _("Drilling")
 	def __init__(self):
 		QWidget.__init__(self)
 		l = QGridLayout(self)
-		l.addWidget(QLabel(_("Coordonnées des perçages en X Y ou X Y Z\n(séparés par des points virgules ou des retours chariot)")), 0, 0, 1, 2)
+		l.addWidget(QLabel(_("X Y or X Y Z coordinates")+"\n"+_("(separated by semicolons or newlines)")), 0, 0, 1, 2)
 		self.editor = QTextEdit()
 		self.editor.setPlainText("0.0 0.0; 0.0 10.0; 0 20.0\n10.0 0.0; 10.0 10.0; 10.0 20.0\n20.0 0.0; 20.0 10; 20.0 20.0")
 		self.editor.sizeHint = lambda: QSize(-1, -1)
 		self.editor.minimumSizeHint = lambda: QSize(10, 10)
 		l.addWidget(self.editor, 1, 0, 1, 2)
 
-		l.addWidget(QLabel(_("Hauteur de retrait par rapport à la surface")), 3, 0, 1, 1)
+		l.addWidget(QLabel(_("Setback height from surface")), 3, 0, 1, 1)
 		self.retractHeight = MyQDoubleSpinBox(0.5, layout=l, layoutArgs=(3, 1, 1, 1))
 
 	def generate(self, fd, **kwargs):
@@ -318,7 +329,7 @@ class OperationDrilling(QWidget):
 				continue
 			coords = coordinatesStr.split()
 			if len(coords) > 3 or len(coords) < 2:
-				raise Exception(_("Trop ou pas assez de coordonnées: ")+coordinatesStr)
+				raise Exception(_("Incorrect amount of coordinates: ")+coordinatesStr)
 			x = float(coords[0]) + kwget('offset_x')
 			y = float(coords[1]) + kwget('offset_y')
 			if len(coords) > 2:
@@ -332,7 +343,7 @@ class OperationDrilling(QWidget):
 			fd.write("G00 Z%g\n" % (start_z+3))
 
 class About(QWidget):
-	tabTitle = _("À propos")
+	tabTitle = _("About")
 	generate = None
 	def __init__(self):
 		QWidget.__init__(self)
@@ -349,10 +360,10 @@ class About(QWidget):
 		aboutLabel.setTextFormat(Qt.RichText)
 		aboutLabel.setText(lnk("https://github.com/clxjaguar/simple-gcode-generator")
 		                   + lnk("https://gitlab.com/cLxJaguar/simple-gcode-generator")
-		                   + "<br>"+_("Programmé par")
+		                   + "<br>"+_("Programmed by")
 		                   + " cLx<br>"+lnk("http://clx.freeshell.org/"))
 		l.addWidget(aboutLabel)
-		ppLabel = QLabel(_("Process parent :")+"\n"+parentProcess)
+		ppLabel = QLabel(_("Parent process: %s") % parentProcess)
 		ppLabel.setWordWrap(True)
 		l.addWidget(ppLabel)
 		l.addStretch()
@@ -400,7 +411,7 @@ class GUI(QWidget):
 
 		# global parameters
 		l = QGridLayout(); layout.addLayout(l)
-		l.addWidget(QLabel(_("Z de surface de pièce")))
+		l.addWidget(QLabel(_("Z workpiece surface")))
 		self.start_z = MyQDoubleSpinBox(0.0, layout=l, layoutArgs=(0, 1, 1, 2))
 
 		def func():
@@ -408,7 +419,7 @@ class GUI(QWidget):
 				self.end_z.setValue(self.start_z.value())
 		self.start_z.valueChanged.connect(func)
 
-		l.addWidget(QLabel(_("Z en fin de fraisage")))
+		l.addWidget(QLabel(_("Z at job end")))
 		self.end_z = MyQDoubleSpinBox(-10.0, layout=l, layoutArgs=(1, 1, 1, 2))
 
 		def func():
@@ -416,24 +427,24 @@ class GUI(QWidget):
 				self.start_z.setValue(self.end_z.value())
 		self.end_z.valueChanged.connect(func)
 
-		l.addWidget(QLabel(_("Décrément en Z (épaisseur des passes)")))
+		l.addWidget(QLabel(_("Z decrement (height of passes)")))
 		self.cutting_depth = MyQDoubleSpinBox(1, minimum=0.05, layout=l, layoutArgs=(2, 1, 1, 2))
 
-		l.addWidget(QLabel(_("Vitesse de descente")))
+		l.addWidget(QLabel(_("Plunging rate")))
 		self.plunge_rate = MyQDoubleSpinBox(30, minimum=0, layout=l, layoutArgs=(3, 1, 1, 2))
 
-		l.addWidget(QLabel(_("Vitesse d'avance")))
+		l.addWidget(QLabel(_("Feed rate")))
 		self.feed_rate = MyQDoubleSpinBox(300, minimum=0, layout=l, layoutArgs=(4, 1, 1, 2))
 
-		l.addWidget(QLabel(_("Mode de trajectoire")))
-		self.trajectoryModeBG = MyQButtonGroup((_("Vitesse"), _("Exacte"), _("Arrêts")), ("G64", "G61", "G61.1"), 0, layout=l, layoutArgs=(5, 1, 1, 2))
+		l.addWidget(QLabel(_("Trajectory mode")))
+		self.trajectoryModeBG = MyQButtonGroup((_("Speed"), _("Exact"), _("Stops")), ("G64", "G61", "G61.1"), 0, layout=l, layoutArgs=(5, 1, 1, 2))
 
 		# buttons at the bottom
 		l2 = QHBoxLayout(); layout.addLayout(l2)
-		b1 = mkButton(_("Générer G-Code\n(vers fichier)"), lambda: self.generate())
+		b1 = mkButton(_("Generate G-Code")+"\n"+_("(to file)"), lambda: self.generate())
 		l2.addWidget(b1)
 
-		self.updateFileBtn = mkButton(_("Générer G-Code\n(mise à jour fichier)"), lambda: self.generate(filename=self.filename))
+		self.updateFileBtn = mkButton(_("Generate G-Code")+"\n"+_("(update file)"), lambda: self.generate(filename=self.filename))
 		self.updateFileBtn.setEnabled(False)
 		l2.addWidget(self.updateFileBtn)
 
@@ -441,7 +452,7 @@ class GUI(QWidget):
 
 		for keyword in keywords:
 			if keyword in parentProcess:
-				b2 = mkButton(_("Générer G-Code\n(vers sortie standard)"), lambda: self.generate(fd=sys.stdout))
+				b2 = mkButton(_("Generate G-Code")+"\n"+_("(to standard output)"), lambda: self.generate(fd=sys.stdout))
 				l2.addWidget(b2)
 				break
 
@@ -451,10 +462,10 @@ class GUI(QWidget):
 
 	def updateWindowState(self):
 		if self.filename != None:
-			self.setWindowTitle("%s - %s" % (os.path.basename(self.filename), _("Générateur de G-Code")))
+			self.setWindowTitle("%s - %s" % (os.path.basename(self.filename), _("G-Code Generator")))
 			self.updateFileBtn.setEnabled(True)
 		else:
-			self.setWindowTitle("%s (v%s)" % (_("Générateur de G-Code"), VERSION))
+			self.setWindowTitle("%s (v%s)" % (_("G-Code Generator"), VERSION))
 			self.updateFileBtn.setEnabled(False)
 
 	def generate(self, fd=None, filename=None):
@@ -474,7 +485,7 @@ class GUI(QWidget):
 				dialog.setFilter(dialog.filter() | QDir.Hidden)
 				dialog.setDefaultSuffix('ngc')
 				dialog.setAcceptMode(QFileDialog.AcceptSave)
-				dialog.setNameFilters([_("Fichiers G-Code")+' (*.ngc *.nc)', _("Tous les fichiers")+' (*)'])
+				dialog.setNameFilters([_("G-Code files")+' (*.ngc *.nc)', _("All files")+' (*)'])
 				if dialog.exec_() == QDialog.Accepted:
 					filename = str(dialog.selectedFiles()[0])
 					fd = open(filename, "w")
@@ -500,7 +511,7 @@ class GUI(QWidget):
 			fd.write("M30 (end of program)\n")
 
 		except Exception as e:
-			QMessageBox.critical(self, _("Erreur génération G-Code"), ("%s:\n%s" % (_("Exception en ligne %d"), sys.exc_info()[2].tb_lineno, e)))
+			QMessageBox.critical(self, _("G-Code generation error"), ("%s:\n%s" % (_("Exception at line %d"), sys.exc_info()[2].tb_lineno, e)))
 
 
 def main():
