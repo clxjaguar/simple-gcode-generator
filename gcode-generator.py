@@ -17,7 +17,7 @@ except Exception as e:
 	_ = lambda s:s
 
 
-VERSION = "1.17"
+VERSION = "1.18"
 
 try:
 	parentProcess = os.popen("ps -o cmd= %d" % os.getppid()).read().strip()
@@ -90,9 +90,9 @@ class OperationHelicoidal(QWidget):
 		self.centerXpos = MyQDoubleSpinBox(layout=l, layoutArgs=(0, 1))
 		self.centerYpos = MyQDoubleSpinBox(layout=l, layoutArgs=(0, 2))
 
-		# radius
-		l.addWidget(QLabel(_("Circular movement radius")), 1, 0)
-		self.radius = MyQDoubleSpinBox(25.0, minimum=0, layout=l, layoutArgs=(1, 1, 1, 2))
+		# diameter
+		l.addWidget(QLabel(_("Circular movement diameter")), 1, 0)
+		self.diameter = MyQDoubleSpinBox(50.0, minimum=0, layout=l, layoutArgs=(1, 1, 1, 2))
 
 		# milling direction
 		l.addWidget(QLabel(_("Milling direction")), 2, 0)
@@ -115,7 +115,7 @@ class OperationHelicoidal(QWidget):
 
 		center_x = self.centerXpos.value() + kwget('offset_x')
 		center_y = self.centerYpos.value() + kwget('offset_y')
-		radius   = self.radius.value()
+		radius   = self.diameter.value() / 2.0
 		plunge_rate = kwget('plunge_rate', 30)
 		feed_rate = kwget('feed_rate', 300)
 		start_z = kwget('start_z', 0)

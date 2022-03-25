@@ -21,10 +21,10 @@ msgstr "Helicoidal"
 msgid "X/Y center position"
 msgstr "X/Y center position"
 
-# msgid "Rayon du déplacement circulaire"
+# msgid "Diamètre du déplacement circulaire"
 #: ../gcode-generator.py:94
-msgid "Circular movement radius"
-msgstr "Circular movement radius"
+msgid "Circular movement diameter"
+msgstr "Circular movement diameter"
 
 # msgid "Sens de découpe"
 #: ../gcode-generator.py:98

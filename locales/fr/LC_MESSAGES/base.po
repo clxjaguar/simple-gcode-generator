@@ -20,8 +20,8 @@ msgid "X/Y center position"
 msgstr "Position X/Y du centre de la découpe"
 
 #: ../gcode-generator.py:94
-msgid "Circular movement radius"
-msgstr "Rayon du déplacement circulaire"
+msgid "Circular movement diameter"
+msgstr "Diamètre du déplacement circulaire"
 
 #: ../gcode-generator.py:98
 msgid "Milling direction"
