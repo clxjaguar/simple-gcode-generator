@@ -287,6 +287,7 @@ class OperationPath(QWidget):
 				fd.write("G01 X%g Y%g (closing shape)\n" % (coordinatesList[0][0], coordinatesList[0][1]))
 			elif closePath == self.NO:
 				fd.write('G00 Z%g (2mm distance from surface on Z axis)\n' % (start_z + 2))
+				lastZ = z
 			elif closePath == self.BACK_AND_FORTH: # TODO: test this!
 				z, z_finished = nextpass(z, start_z, end_z, cutting_depth)
 				if not z_finished:
