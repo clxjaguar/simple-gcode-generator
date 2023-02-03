@@ -511,7 +511,7 @@ class GUI(QWidget):
 			fd.write("M30 (end of program)\n")
 
 		except Exception as e:
-			QMessageBox.critical(self, _("G-Code generation error"), ("%s:\n%s" % (_("Exception at line %d"), sys.exc_info()[2].tb_lineno, e)))
+			QMessageBox.critical(self, _("G-Code generation error"), ("%s:\n%s" % ((_("Exception at line %d") % sys.exc_info()[2].tb_lineno), str(e))))
 
 
 def main():
