@@ -288,9 +288,9 @@ class OperationPath(QWidget):
 			elif closePath == self.NO:
 				fd.write('G00 Z%g (2mm distance from surface on Z axis)\n' % (start_z + 2))
 				lastZ = z
-			elif closePath == self.BACK_AND_FORTH: # TODO: test this!
-				z, z_finished = nextpass(z, start_z, end_z, cutting_depth)
+			elif closePath == self.BACK_AND_FORTH:
 				if not z_finished:
+					z, z_finished = nextpass(z, start_z, end_z, cutting_depth)
 					fd.write('G01 F%g Z%g (descend for backward pass)\n' % (plunge_rate, z))
 					for x, y in reversed(coordinatesList[:-1]):
 						fd.write("G01 F%g X%g Y%g\n" % (feed_rate, x, y))
