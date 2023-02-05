@@ -17,7 +17,7 @@ except Exception as e:
 	_ = lambda s:s
 
 
-VERSION = "1.18"
+VERSION = "1.19"
 
 try:
 	parentProcess = os.popen("ps -o cmd= %d" % os.getppid()).read().strip()
